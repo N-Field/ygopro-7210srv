@@ -37,17 +37,7 @@ build:
 
 after_build:
   - ps: move bin\release\ygopro.exe .
-  - git config --global user.name "Smile-DK"
-  - git config --global user.email "2236141431@qq.com"
   - git clone https://github.com/Smile-DK/ygopro-svrelease
-  - cd ygopro-svrelease
-  - rm -rf 7210
-  - mkdir 7210
-  - cp -rf ../ygopro.exe 7210
-  - git add . -A
-  - git commit -m "ygopro 7210 server pushed by Appveyor"
-  - git push %Smile%Smile-DK/ygopro-svrelease master
-  - cd ..
   
   - git clone https://github.com/moecube/ygopro-server
   - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://npm.taobao.org/mirrors/node/v8.4.0/node-v8.4.0-win-x64.zip ; exit 0"
@@ -90,16 +80,15 @@ after_build:
   - npm install pm2@latest -g
   - npm install ws
   - npm install redis
-  - cd ..
-  - 7z a ygopro-server.7z ygopro-server start.bat -mx=9 -xr!.git*
+  
+  - ipconfig
+  - node.exe ygopro-server.js
 
 test: off
 
 artifacts:
   - path: ygopro.exe
     name: ygopro
-  - path: ygopro-server.7z
-    name: ygopro-server
 
 cache:
   - premake-5.0.0-alpha10-windows.zip
@@ -110,4 +99,4 @@ cache:
   - Redis-x64-3.2.100.zip
 branches:
   only:
-  - master
+  - startsv

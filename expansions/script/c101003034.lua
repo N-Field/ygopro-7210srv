@@ -1,7 +1,7 @@
 --電送擬人エレキネシス
 --Electronic Transimulation Wattkinesis
 --Scripted by Eerie Code
-function c101003100.initial_effect(c)
+function c101003034.initial_effect(c)
 	--move
 	local e2=Effect.CreateEffect(c)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
@@ -9,23 +9,23 @@ function c101003100.initial_effect(c)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_HAND+LOCATION_MZONE)
 	e2:SetCountLimit(1)
-	e2:SetCost(c101003100.seqcost)
-	e2:SetTarget(c101003100.seqtg)
-	e2:SetOperation(c101003100.seqop)
+	e2:SetCost(c101003034.seqcost)
+	e2:SetTarget(c101003034.seqtg)
+	e2:SetOperation(c101003034.seqop)
 	c:RegisterEffect(e2)
 end
-function c101003100.seqcost(e,tp,eg,ep,ev,re,r,rp,chk)
+function c101003034.seqcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
-function c101003100.seqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function c101003034.seqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_MZONE,1,nil)
 		and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 end
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(101003100,0))
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(101003034,0))
 	Duel.SelectTarget(tp,nil,tp,0,LOCATION_MZONE,1,1,nil)
 end
-function c101003100.seqop(e,tp,eg,ep,ev,re,r,rp)
+function c101003034.seqop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if not tc:IsRelateToEffect(e) or tc:IsControler(tp) then return end
 	local seq=tc:GetSequence()

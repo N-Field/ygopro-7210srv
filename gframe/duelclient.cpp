@@ -261,6 +261,7 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 				mainGame->gMutex.Unlock();
 				event_base_loopbreak(client_base);
 			} else {
+				event_base_loopbreak(client_base);
 				StartClient(temp_ip, temp_port, temp_create_game);
 			}
 			break;

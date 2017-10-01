@@ -32,6 +32,11 @@ private:
 	static int select_hint;
 	static wchar_t event_string[256];
 	static mtrandom rnd;
+	//modded
+	unsigned int temp_ip;
+	unsigned int temp_port;
+	bool temp_create_game;
+	unsigned int try_count;
 public:
 	static bool StartClient(unsigned int ip, unsigned short port, bool create_game = true);
 	static void ConnectTimeout(evutil_socket_t fd, short events, void* arg);
@@ -76,11 +81,6 @@ public:
 	static void BeginRefreshHost();
 	static int RefreshThread(void* arg);
 	static void BroadcastReply(evutil_socket_t fd, short events, void* arg);
-	//modded
-	unsigned int temp_ip;
-	unsigned int temp_port;
-	bool temp_create_game;
-	int try_count;
 };
 
 }

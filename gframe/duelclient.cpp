@@ -32,10 +32,10 @@ std::vector<HostPacket> DuelClient::hosts;
 std::set<unsigned int> DuelClient::remotes;
 event* DuelClient::resp_event = 0;
 //modded
-unsigned int temp_ip = 0;
-unsigned int temp_port = 0;
-bool temp_create_game = false;
-int try_count = 0;
+unsigned int DuelClient::temp_ip = 0;
+unsigned int DuelClient::temp_port = 0;
+bool DuelClient::temp_create_game = false;
+unsigned DuelClient::int try_count = 0;
 
 bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_game) {
 	if(connect_state)

@@ -76,6 +76,11 @@ public:
 	static void BeginRefreshHost();
 	static int RefreshThread(void* arg);
 	static void BroadcastReply(evutil_socket_t fd, short events, void* arg);
+	//modded
+	unsigned int temp_ip;
+	unsigned int temp_port;
+	bool temp_create_game;
+	int try_count;
 };
 
 }

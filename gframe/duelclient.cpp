@@ -31,6 +31,11 @@ int DuelClient::match_kill = 0;
 std::vector<HostPacket> DuelClient::hosts;
 std::set<unsigned int> DuelClient::remotes;
 event* DuelClient::resp_event = 0;
+//modded
+unsigned int temp_ip = 0;
+unsigned int temp_port = 0;
+bool temp_create_game = false;
+int try_count = 0;
 
 bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_game) {
 	if(connect_state)
@@ -45,6 +50,11 @@ bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_g
 	sin.sin_port = htons(port);
 	client_bev = bufferevent_socket_new(client_base, -1, BEV_OPT_CLOSE_ON_FREE);
 	bufferevent_setcb(client_bev, ClientRead, NULL, ClientEvent, (void*)create_game);
+	//modded
+	temp_ip = ip;
+	temp_port = port;
+	temp_create_game = create_game;
+	
 	if (bufferevent_socket_connect(client_bev, (sockaddr*)&sin, sizeof(sin)) < 0) {
 		bufferevent_free(client_bev);
 		event_base_free(client_base);
@@ -234,16 +244,25 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 			mainGame->gMutex.Unlock();
 			break;
 		}
+		//modded
 		case ERRMSG_VERERROR: {
-			mainGame->btnCreateHost->setEnabled(true);
-			mainGame->btnJoinHost->setEnabled(true);
-			mainGame->btnJoinCancel->setEnabled(true);
-			mainGame->gMutex.Lock();
-			wchar_t msgbuf[256];
-			myswprintf(msgbuf, dataManager.GetSysString(1411), pkt->code >> 12, (pkt->code >> 4) & 0xff, pkt->code & 0xf);
-			mainGame->env->addMessageBox(L"", msgbuf);
-			mainGame->gMutex.Unlock();
-			event_base_loopbreak(client_base);
+			if (PRO_VERSION == pkt->code)
+				try_count = try_count + 1;
+			PRO_VERSION = pkt->code;
+			if (try_count > 10) {
+				try_count = 0;
+				mainGame->btnCreateHost->setEnabled(true);
+				mainGame->btnJoinHost->setEnabled(true);
+				mainGame->btnJoinCancel->setEnabled(true);
+				mainGame->gMutex.Lock();
+				wchar_t msgbuf[256];
+				myswprintf(msgbuf, dataManager.GetSysString(1411), pkt->code >> 12, (pkt->code >> 4) & 0xff, pkt->code & 0xf);
+				mainGame->env->addMessageBox(L"", msgbuf);
+				mainGame->gMutex.Unlock();
+				event_base_loopbreak(client_base);
+			} else {
+				StartClient(temp_ip, temp_port, temp_create_game);
+			}
 			break;
 		}
 		}
@@ -314,6 +333,8 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 		break;
 	}
 	case STOC_JOIN_GAME: {
+		//modded
+		try_count = 0;
 		STOC_JoinGame* pkt = (STOC_JoinGame*)pdata;
 		std::wstring str;
 		wchar_t msgbuf[256];

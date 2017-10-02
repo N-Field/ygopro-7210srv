@@ -254,7 +254,7 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
 				mainGame->btnJoinCancel->setEnabled(true);
-				mainGame->gMutex.Lock();
+				//mainGame->gMutex.Lock();
 				//wchar_t msgbuf[256];
 				//myswprintf(msgbuf, dataManager.GetSysString(1411), pkt->code >> 12, (pkt->code >> 4) & 0xff, pkt->code & 0xf);
 				//mainGame->env->addMessageBox(L"", msgbuf);

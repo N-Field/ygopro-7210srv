@@ -32,12 +32,13 @@ private:
 	static int select_hint;
 	static wchar_t event_string[256];
 	static mtrandom rnd;
+public:
 	//modded
 	static unsigned int temp_ip;
 	static unsigned short temp_port;
-	static bool temp_create_game;
 	static unsigned int try_count;
-public:
+	static bool try_needed;
+	
 	static bool StartClient(unsigned int ip, unsigned short port, bool create_game = true);
 	static void ConnectTimeout(evutil_socket_t fd, short events, void* arg);
 	static void StopClient(bool is_exiting = false);

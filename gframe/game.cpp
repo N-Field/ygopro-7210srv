@@ -736,6 +736,18 @@ void Game::MainLoop() {
 				if(dInfo.time_left[dInfo.time_player])
 					dInfo.time_left[dInfo.time_player]--;
 		}
+		//modded
+		if (DuelClient::try_needed) {
+			DuelClient::try_needed = false;
+			if (DuelClient::try_count > 10) {
+				DuelClient::try_count = 0;
+				btnCreateHost->setEnabled(true);
+				btnJoinHost->setEnabled(true);
+				btnJoinCancel->setEnabled(true);
+			} else {
+				DuelClient::StartClient(DuelClient::temp_ip, DuelClient::temp_port, false);
+			}
+		}
 	}
 	DuelClient::StopClient(true);
 	if(mainGame->dInfo.isSingleMode)

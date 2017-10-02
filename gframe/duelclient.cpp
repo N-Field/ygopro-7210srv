@@ -34,8 +34,8 @@ event* DuelClient::resp_event = 0;
 //modded
 unsigned int DuelClient::temp_ip = 0;
 unsigned short DuelClient::temp_port = 0;
-bool DuelClient::temp_create_game = false;
 unsigned int DuelClient::try_count = 0;
+bool DuelClient::try_needed = false;
 
 bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_game) {
 	if(connect_state)
@@ -53,7 +53,6 @@ bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_g
 	//modded
 	temp_ip = ip;
 	temp_port = port;
-	temp_create_game = create_game;
 	
 	if (bufferevent_socket_connect(client_bev, (sockaddr*)&sin, sizeof(sin)) < 0) {
 		bufferevent_free(client_bev);
@@ -246,24 +245,13 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 		}
 		//modded
 		case ERRMSG_VERERROR: {
-			//if (PRO_VERSION == pkt->code)
-			//	try_count = try_count + 1;
+			event_base_loopbreak(client_base);
 			PRO_VERSION = pkt->code;
-			//if (try_count > 10) {
-			//	try_count = 0;
-				mainGame->btnCreateHost->setEnabled(true);
-				mainGame->btnJoinHost->setEnabled(true);
-				mainGame->btnJoinCancel->setEnabled(true);
-				//mainGame->gMutex.Lock();
-				//wchar_t msgbuf[256];
-				//myswprintf(msgbuf, dataManager.GetSysString(1411), pkt->code >> 12, (pkt->code >> 4) & 0xff, pkt->code & 0xf);
-				//mainGame->env->addMessageBox(L"", msgbuf);
-				//mainGame->gMutex.Unlock();
-				event_base_loopbreak(client_base);
-			//} else {
-			//	event_base_loopbreak(client_base);
-			//	StartClient(temp_ip, temp_port, temp_create_game);
-			//}
+			try_count = try_count + 1;
+			try_needed = true;
+			//mainGame->btnCreateHost->setEnabled(true);
+			//mainGame->btnJoinHost->setEnabled(true);
+			//mainGame->btnJoinCancel->setEnabled(true);
 			break;
 		}
 		}

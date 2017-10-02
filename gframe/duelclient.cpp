@@ -33,7 +33,7 @@ std::set<unsigned int> DuelClient::remotes;
 event* DuelClient::resp_event = 0;
 //modded
 unsigned int DuelClient::temp_ip = 0;
-unsigned int DuelClient::temp_port = 0;
+unsigned short DuelClient::temp_port = 0;
 bool DuelClient::temp_create_game = false;
 unsigned int DuelClient::try_count = 0;
 
@@ -246,24 +246,24 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 		}
 		//modded
 		case ERRMSG_VERERROR: {
-			if (PRO_VERSION == pkt->code)
-				try_count = try_count + 1;
+			//if (PRO_VERSION == pkt->code)
+			//	try_count = try_count + 1;
 			PRO_VERSION = pkt->code;
-			if (try_count > 10) {
-				try_count = 0;
+			//if (try_count > 10) {
+			//	try_count = 0;
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
 				mainGame->btnJoinCancel->setEnabled(true);
 				mainGame->gMutex.Lock();
-				wchar_t msgbuf[256];
-				myswprintf(msgbuf, dataManager.GetSysString(1411), pkt->code >> 12, (pkt->code >> 4) & 0xff, pkt->code & 0xf);
-				mainGame->env->addMessageBox(L"", msgbuf);
-				mainGame->gMutex.Unlock();
+				//wchar_t msgbuf[256];
+				//myswprintf(msgbuf, dataManager.GetSysString(1411), pkt->code >> 12, (pkt->code >> 4) & 0xff, pkt->code & 0xf);
+				//mainGame->env->addMessageBox(L"", msgbuf);
+				//mainGame->gMutex.Unlock();
 				event_base_loopbreak(client_base);
-			} else {
-				event_base_loopbreak(client_base);
-				StartClient(temp_ip, temp_port, temp_create_game);
-			}
+			//} else {
+			//	event_base_loopbreak(client_base);
+			//	StartClient(temp_ip, temp_port, temp_create_game);
+			//}
 			break;
 		}
 		}

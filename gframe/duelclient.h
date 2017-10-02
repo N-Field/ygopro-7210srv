@@ -34,7 +34,7 @@ private:
 	static mtrandom rnd;
 	//modded
 	static unsigned int temp_ip;
-	static unsigned int temp_port;
+	static unsigned short temp_port;
 	static bool temp_create_game;
 	static unsigned int try_count;
 public:

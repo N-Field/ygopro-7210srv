@@ -36,7 +36,7 @@ public:
 	//modded
 	static unsigned int temp_ip;
 	static unsigned short temp_port;
-	static unsigned int try_count;
+	static unsigned short temp_ver;
 	static bool try_needed;
 	
 	static bool StartClient(unsigned int ip, unsigned short port, bool create_game = true);

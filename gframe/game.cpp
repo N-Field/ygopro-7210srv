@@ -14,8 +14,7 @@
 #include <dirent.h>
 #endif
 
-//modded
-int PRO_VERSION = 0x133F;
+const unsigned short PRO_VERSION = 0x133F;
 
 namespace ygo {
 
@@ -68,7 +67,7 @@ bool Game::Initialize() {
 	guiFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.textfont, gameConf.textfontsize);
 	textFont = guiFont;
 	smgr = device->getSceneManager();
-	device->setWindowCaption(L"YGOPro FreeverX");
+	device->setWindowCaption(L"YGOPro");
 	device->setResizable(false);
 #ifdef _WIN32
 	irr::video::SExposedVideoData exposedData = driver->getExposedVideoData();
@@ -87,7 +86,7 @@ bool Game::Initialize() {
 	//main menu
 	wchar_t strbuf[256];
 	//modded
-	myswprintf(strbuf, L"YGOPro FreeverX Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
+	myswprintf(strbuf, L"YGOPro Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
 	wMainMenu = env->addWindow(rect<s32>(370, 200, 650, 415), false, strbuf);
 	wMainMenu->getCloseButton()->setVisible(false);
 	btnLanMode = env->addButton(rect<s32>(10, 30, 270, 60), wMainMenu, BUTTON_LAN_MODE, dataManager.GetSysString(1200));
@@ -727,7 +726,7 @@ void Game::MainLoop() {
 			usleep(20000);
 #endif
 		if(cur_time >= 1000) {
-			myswprintf(cap, L"YGOPro FreeverX FPS: %d", fps);
+			myswprintf(cap, L"YGOPro FPS: %d", fps);
 			device->setWindowCaption(cap);
 			fps = 0;
 			cur_time -= 1000;
@@ -739,14 +738,7 @@ void Game::MainLoop() {
 		//modded
 		if (DuelClient::try_needed) {
 			DuelClient::try_needed = false;
-			if (DuelClient::try_count > 10) {
-				DuelClient::try_count = 0;
-				btnCreateHost->setEnabled(true);
-				btnJoinHost->setEnabled(true);
-				btnJoinCancel->setEnabled(true);
-			} else {
-				DuelClient::StartClient(DuelClient::temp_ip, DuelClient::temp_port, false);
-			}
+			DuelClient::StartClient(DuelClient::temp_ip, DuelClient::temp_port, false);
 		}
 	}
 	DuelClient::StopClient(true);

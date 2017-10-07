@@ -42,7 +42,7 @@ function c100407008.initial_effect(c)
 	c:RegisterEffect(e4)
 	--spsummon
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(91512835,0))
+	e5:SetDescription(aux.Stringid(91512835,1))
 	e5:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e5:SetRange(LOCATION_MZONE)
@@ -50,7 +50,7 @@ function c100407008.initial_effect(c)
 	e5:SetCountLimit(1)
 	e5:SetTarget(c100407008.sptg)
 	e5:SetOperation(c100407008.spop)
-	c:RegisterEffect(e4)
+	c:RegisterEffect(e5)
 end
 function c100407008.splimit(e,se,sp,st)
 	return se:IsHasType(EFFECT_TYPE_ACTIONS)
@@ -69,7 +69,7 @@ function c100407008.atcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttacker()==c and c:IsChainAttackable(0,true)
 end
 function c100407008.atcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroup(tp,nil,1,e:GetHandler()) nd
+	if chk==0 then return Duel.CheckReleaseGroup(tp,nil,1,e:GetHandler()) end
 	local g=Duel.SelectReleaseGroup(tp,nil,1,1,e:GetHandler())
 	Duel.Release(g,REASON_COST)
 end

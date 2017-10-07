@@ -15,9 +15,10 @@ function c100407014.initial_effect(c)
 	c:RegisterEffect(e1)
 	--damage
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(100407014,0))
+	e2:SetDescription(aux.Stringid(100407014,1))
 	e2:SetCategory(CATEGORY_DAMAGE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
 	e2:SetCode(EVENT_BATTLE_DESTROYED)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,100407014)
@@ -61,6 +62,7 @@ function c100407014.damfilter1(c,tp)
 	return c:IsReason(REASON_EFFECT) and c:IsReason(REASON_DESTROY) and c:IsLocation(LOCATION_GRAVE) and c:GetPreviousControler()~=tp
 end
 function c100407014.damcon2(e,tp,eg,ep,ev,re,r,rp)
+	if not re then return false end
 	local rc=re:GetHandler()
 	return rc:IsControler(tp) and rc:GetOriginalAttribute()==ATTRIBUTE_DARK
 		and rc:GetOriginalRace()==RACE_MACHINE
